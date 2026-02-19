@@ -1,0 +1,26 @@
+# Java / Maven
+target/
+*.log
+*.class
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.pytest_cache/
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Playwright
+/test-results/
+/playwright-report/
+
+# IDEs
+.idea/
+.vscode/
+
+# Environment Variables
+*.env

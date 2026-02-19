@@ -1,0 +1,5 @@
+selenium
+playwright
+pytest
+requests
+python-dotenv

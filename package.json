@@ -1,0 +1,12 @@
+{
+  "name": "automation-assignments",
+  "version": "1.0.0",
+  "description": "Automation assignments solutions in JavaScript",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "playwright": "^1.58.2",
+    "selenium-webdriver": "^4.16.0"
+  }
+}
