@@ -1,0 +1,17 @@
+{
+  "name": "PlaywrightJs",
+  "version": "1.0.0",
+  "description": "Automation assignments solutions in JavaScript",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.3.0",
+    "@playwright/test": "^1.41.2",
+    "playwright": "^1.41.2"
+  },
+  "dependencies": {
+    "logger": "^0.0.1",
+    "selenium-webdriver": "^4.16.0"
+  }
+}
