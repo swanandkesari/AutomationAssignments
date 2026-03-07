@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Automation assignments solutions in JavaScript",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm test --prefix javascript/PlaywrightJs"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.3.1",
     "@playwright/test": "^1.40.0",
     "playwright": "^1.40.0",
     "selenium-webdriver": "^4.16.0"

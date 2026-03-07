@@ -3,7 +3,7 @@
 ## 1. Elements (Current Focus)
 - [x] **Home Page**: Verify category cards (Implemented).
 - [ ] **Text Box**: Verify form submission and output.
-- [ ] **Check Box**: Verify expand/collapse and selection logic.
+- [x] **Check Box**: Verify expand/collapse and selection logic.
 - [ ] **Radio Button**: Verify selection and "disabled" state handling.
 - [ ] **Web Tables**: Verify adding, editing, and deleting rows.
 - [ ] **Buttons**: Verify double click, right click, and dynamic click.

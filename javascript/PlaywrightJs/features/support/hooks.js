@@ -1,45 +1,30 @@
-const { Before, After, BeforeAll, AfterAll, Status, setDefaultTimeout } = require('@cucumber/cucumber');
+const { BeforeAll, AfterAll, Before, After, setDefaultTimeout } = require('@cucumber/cucumber');
 const { chromium } = require('playwright');
-const fs = require('fs');
-const path = require('path');
-const logger = require('./logger');
+const { baseURL } = require('../../config/app_config');
 
+// Set a default timeout for all steps to 60 seconds
 setDefaultTimeout(60 * 1000);
 
 let browser;
 
-BeforeAll(async function () {
-    // Ensure reports directory exists
-    const reportDir = path.join(process.cwd(), 'reports');
-    if (!fs.existsSync(reportDir)) {
-        fs.mkdirSync(reportDir);
-    }
-
-    // Launch browser once before all tests
-    browser = await chromium.launch({ headless: false });
+// BeforeAll hook to launch the browser once before all tests
+BeforeAll(async () => {
+    browser = await chromium.launch({ headless: true });
 });
 
-AfterAll(async function () {
-    if (browser) await browser.close();
+// AfterAll hook to close the browser after all tests are done
+AfterAll(async () => {
+    await browser.close();
 });
 
-Before(async function (scenario) {
-    logger.log(`Starting Scenario: ${scenario.pickle.name}`);
-    if (!browser) {
-        browser = await chromium.launch({ headless: false });
-    }
-    this.context = await browser.newContext();
+// Before hook to create a new page and context for each scenario
+Before(async function () {
+    this.context = await browser.newContext({ baseURL });
     this.page = await this.context.newPage();
 });
 
-After(async function (scenario) {
-    logger.log(`Finished Scenario: ${scenario.pickle.name} - Status: ${scenario.result.status}`);
-    if (scenario.result.status === Status.FAILED) {
-        if (this.page) {
-            const screenshot = await this.page.screenshot({ path: `screenshots/${scenario.pickle.name.replace(/ /g, '_')}_failed.png`, fullPage: true });
-            this.attach(screenshot, 'image/png');
-        }
-    }
-    if (this.page) await this.page.close();
-    if (this.context) await this.context.close();
+// After hook to clean up by closing the page and context
+After(async function () {
+    await this.page.close();
+    await this.context.close();
 });

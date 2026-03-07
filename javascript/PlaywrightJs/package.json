@@ -1,17 +1,17 @@
 {
-  "name": "PlaywrightJs",
+  "name": "playwrightjs",
   "version": "1.0.0",
-  "description": "Automation assignments solutions in JavaScript",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "cucumber-js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "devDependencies": {
-    "@cucumber/cucumber": "^10.3.0",
-    "@playwright/test": "^1.41.2",
-    "playwright": "^1.41.2"
-  },
-  "dependencies": {
-    "logger": "^0.0.1",
-    "selenium-webdriver": "^4.16.0"
+    "@cucumber/cucumber": "^9.5.1",
+    "@playwright/test": "^1.40.0"
   }
 }
