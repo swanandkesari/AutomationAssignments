@@ -1,13 +1,11 @@
 {
-  "name": "automation-assignments",
+  "name": "PlaywrightJs",
   "version": "1.0.0",
   "description": "Automation assignments solutions in JavaScript",
   "scripts": {
-    "test": "npm test --prefix javascript/PlaywrightJs"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "@cucumber/cucumber": "^10.3.1",
+  "dependencies": {
     "@playwright/test": "^1.40.0",
     "playwright": "^1.40.0",
     "selenium-webdriver": "^4.16.0"
