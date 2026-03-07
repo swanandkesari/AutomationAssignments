@@ -1,0 +1,78 @@
+/**
+ * Step Definitions for Authentication feature
+ * Handles login, logout, and registration flows
+ */
+const { Given, When, Then } = require('@cucumber/cucumber');
+
+Given('I navigate to the Login page', async function () {
+    await this.page.goto(`${this.appConfig.baseURL}/login`);
+    await this.page.waitForLoadState('domcontentloaded');
+});
+
+Given('I navigate to the Registration page', async function () {
+    await this.page.goto(`${this.appConfig.baseURL}/register`);
+    await this.page.waitForLoadState('domcontentloaded');
+});
+
+When('I enter username {string}', async function (username) {
+    await this.page.fill('input[placeholder*="user"], input[name*="user"], input[id*="user"]', username);
+});
+
+When('I enter email {string}', async function (email) {
+    await this.page.fill('input[type="email"], input[placeholder*="email"], input[name*="email"]', email);
+});
+
+When('I enter password {string}', async function (password) {
+    await this.page.fill('input[type="password"], input[placeholder*="password"], input[name*="password"]', password);
+});
+
+When('I click the login button', async function () {
+    await this.page.click('button:has-text("Login"), button:has-text("Sign In"), input[type="submit"]');
+    await this.page.waitForLoadState('domcontentloaded');
+});
+
+When('I click the register button', async function () {
+    await this.page.click('button:has-text("Register"), button:has-text("Sign Up"), input[type="submit"]');
+    await this.page.waitForLoadState('domcontentloaded');
+});
+
+Then('I should be logged in', async function () {
+    const currentUrl = this.page.url();
+    if (currentUrl.includes('login') || currentUrl.includes('signin') || currentUrl.includes('register')) {
+        throw new Error(`Still on login/register page, not logged in. URL: ${currentUrl}`);
+    }
+});
+
+Then('I should see an error message', async function () {
+    const errorSelectors = [
+        'div.error',
+        'div.alert-danger',
+        'span.error-message',
+        '.validation-error',
+        '[role="alert"]'
+    ];
+
+    let found = false;
+    for (const selector of errorSelectors) {
+        try {
+            const isVisible = await this.page.isVisible(selector);
+            if (isVisible) {
+                found = true;
+                break;
+            }
+        } catch (e) {
+            // Try next selector
+        }
+    }
+
+    if (!found) {
+        throw new Error('Expected to see an error message but none found');
+    }
+});
+
+Then('I should see the error message {string}', async function (expectedMessage) {
+    const pageContent = await this.page.textContent('body');
+    if (!pageContent.includes(expectedMessage)) {
+        throw new Error(`Expected to find error message "${expectedMessage}" on page`);
+    }
+});

@@ -1,0 +1,27 @@
+Feature: User Account Management
+  As a logged-in user
+  I want to manage my account profile
+  So that I can keep my information up to date
+
+  Scenario: Update user profile
+    Given I navigate to the User Account page
+    When I update my profile with:
+      | First Name   | John                  |
+      | Last Name    | Doe                   |
+      | Email        | john.doe@example.com  |
+      | Phone Number | +1-555-0123           |
+    Then my user information should show:
+      | First Name   | John                  |
+      | Last Name    | Doe                   |
+      | Email        | john.doe@example.com  |
+
+  Scenario: Change password
+    Given I navigate to the User Account page
+    When I change my password to "newpassword123!"
+    Then my user information should show:
+      | Password Updated | true |
+
+  Scenario: Logout from user account
+    Given I navigate to the User Account page
+    When I logout
+    Then I should be logged out

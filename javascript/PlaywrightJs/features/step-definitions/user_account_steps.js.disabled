@@ -1,0 +1,54 @@
+/**
+ * Step Definitions for User Account Management feature
+ * Handles user profile, account settings, and related interactions
+ */
+const { Given, When, Then } = require('@cucumber/cucumber');
+
+Given('I navigate to the User Account page', async function () {
+    await this.userAccountPage.navigateToUserAccount();
+});
+
+When('I update my profile with:', async function (dataTable) {
+    const rows = dataTable.rows();
+    const profileData = {};
+
+    for (let i = 1; i < rows.length; i++) {
+        const [field, value] = rows[i];
+        profileData[field.trim()] = value.trim();
+    }
+
+    await this.userAccountPage.updateUserProfile(profileData);
+});
+
+When('I change my password to {string}', async function (newPassword) {
+    await this.userAccountPage.changePassword(newPassword);
+});
+
+When('I logout', async function () {
+    await this.userAccountPage.logout();
+});
+
+Then('my user information should show:', async function (dataTable) {
+    const expectedData = {};
+    const rows = dataTable.rows();
+
+    for (let i = 1; i < rows.length; i++) {
+        const [field, value] = rows[i];
+        expectedData[field.trim()] = value.trim();
+    }
+
+    const userInfo = await this.userAccountPage.getUserInfo();
+
+    for (const [field, expectedValue] of Object.entries(expectedData)) {
+        if (userInfo[field] !== expectedValue) {
+            throw new Error(`Expected ${field} to be "${expectedValue}" but got "${userInfo[field]}"`);
+        }
+    }
+});
+
+Then('I should be logged out', async function () {
+    const currentUrl = this.page.url();
+    if (!currentUrl.includes('login') && !currentUrl.includes('signin')) {
+        throw new Error(`Expected to be redirected to login page but url is: ${currentUrl}`);
+    }
+});

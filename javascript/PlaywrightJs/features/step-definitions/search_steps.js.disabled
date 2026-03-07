@@ -1,0 +1,39 @@
+/**
+ * Step Definitions for Search feature
+ * Handles search functionality
+ */
+const { Given, When, Then } = require('@cucumber/cucumber');
+
+Given('I navigate to the Search page', async function () {
+    await this.searchPage.navigateToSearch();
+});
+
+When('I search for {string}', async function (searchTerm) {
+    await this.searchPage.search(searchTerm);
+});
+
+When('I apply {string} filter', async function (filter) {
+    await this.searchPage.applyFilter(filter);
+});
+
+When('I click on result number {int}', async function (index) {
+    await this.searchPage.clickResultByIndex(index);
+});
+
+Then('I should see {int} search results', async function (expectedCount) {
+    const count = await this.searchPage.getResultsCount();
+    if (count !== expectedCount) {
+        throw new Error(`Expected ${expectedCount} results but found ${count}`);
+    }
+});
+
+Then('I should see these search results:', async function (dataTable) {
+    const expectedTitles = dataTable.raw().map(row => row[0]);
+    const actualTitles = await this.searchPage.getResultTitles();
+
+    for (const expectedTitle of expectedTitles) {
+        if (!actualTitles.includes(expectedTitle)) {
+            throw new Error(`Expected to find "${expectedTitle}" in search results, but got: ${JSON.stringify(actualTitles)}`);
+        }
+    }
+});

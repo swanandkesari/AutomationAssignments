@@ -1,0 +1,24 @@
+Feature: Search Functionality
+  As a user
+  I want to search for items
+  So that I can find what I'm looking for
+
+  Scenario: Search for a specific item
+    Given I navigate to the Search page
+    When I search for "automation"
+    Then I should see 10 search results
+
+  Scenario: Search with filter
+    Given I navigate to the Search page
+    When I search for "testing"
+    And I apply "recent" filter
+    Then I should see these search results:
+      | Test Automation Framework |
+      | Selenium Overview         |
+      | Playwright Testing Guide  |
+
+  Scenario: Click on search result
+    Given I navigate to the Search page
+    When I search for "playwright"
+    And I click on result number 1
+    Then I should be on "playwright"

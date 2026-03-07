@@ -1,30 +1,41 @@
-const { BeforeAll, AfterAll, Before, After, setDefaultTimeout } = require('@cucumber/cucumber');
+const { Before, After, setDefaultTimeout } = require('@cucumber/cucumber');
 const { chromium } = require('playwright');
-const { baseURL } = require('../../config/app_config');
+const appConfig = require('../../src/config/app_config');
 
 // Set a default timeout for all steps to 60 seconds
 setDefaultTimeout(60 * 1000);
 
-let browser;
-
-// BeforeAll hook to launch the browser once before all tests
-BeforeAll(async () => {
-    browser = await chromium.launch({ headless: true });
-});
-
-// AfterAll hook to close the browser after all tests are done
-AfterAll(async () => {
-    await browser.close();
-});
-
-// Before hook to create a new page and context for each scenario
+// Before hook to create a new browser and page for each scenario
 Before(async function () {
-    this.context = await browser.newContext({ baseURL });
-    this.page = await this.context.newPage();
+    try {
+        this.browser = await chromium.launch({ headless: true });
+        this.context = await this.browser.newContext({ baseURL: appConfig.baseURL });
+        this.page = await this.context.newPage();
+
+        // Initialize page objects with the new page
+        this.initializePageObjects();
+    } catch (error) {
+        console.error('Error in Before hook:', error);
+        throw error;
+    }
 });
 
-// After hook to clean up by closing the page and context
+// After hook to clean up by closing the page, context, and browser
 After(async function () {
-    await this.page.close();
-    await this.context.close();
+    try {
+        if (this.page) {
+            await this.page.close();
+        }
+        if (this.context) {
+            await this.context.close();
+        }
+        if (this.browser) {
+            await this.browser.close();
+        }
+
+        // Cleanup world
+        await this.cleanup();
+    } catch (error) {
+        console.error('Error in After hook:', error);
+    }
 });

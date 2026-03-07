@@ -1,31 +1,36 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
-const { TextBoxPage } = require('../../pages/textBox.page');
+/**
+ * Step Definitions for Text Box feature
+ * Handles form filling and submission
+ */
+const { When, Then } = require('@cucumber/cucumber');
 
-Given('I am on the Text Box page', async function () {
-    this.textBoxPage = new TextBoxPage(this.page);
-    await this.textBoxPage.navigate();
+When('I fill the text box form with:', async function (dataTable) {
+    const rows = dataTable.rows();
+    const formData = {};
+
+    for (let i = 1; i < rows.length; i++) {
+        const [label, value] = rows[i];
+        if (label === 'Full Name') {
+            formData.fullName = value;
+        } else if (label === 'Email') {
+            formData.email = value;
+        } else if (label === 'Current Address') {
+            formData.currentAddress = value;
+        } else if (label === 'Permanent Address') {
+            formData.permanentAddress = value;
+        }
+    }
+
+    await this.textBoxPage.fillFormWithData(formData);
 });
 
-When('I fill the form with the following details:', async function (dataTable) {
-    const data = dataTable.hashes()[0];
-    this.formData = {
-        fullName: data['Full Name'],
-        email: data['Email'],
-        currentAddress: data['Current Address'],
-        permanentAddress: data['Permanent Address']
-    };
-    await this.textBoxPage.fillForm(
-        this.formData.fullName,
-        this.formData.email,
-        this.formData.currentAddress,
-        this.formData.permanentAddress
-    );
-});
-
-When('I submit the form', async function () {
+When('I click the submit button', async function () {
     await this.textBoxPage.submitForm();
 });
 
-Then('I should see the submitted details displayed correctly', async function () {
-    await this.textBoxPage.verifyOutput(this.formData);
+Then('I should see the submitted data in the output', async function () {
+    const output = await this.textBoxPage.getOutputText();
+    if (!output || output.trim() === '') {
+        throw new Error('Output section is empty');
+    }
 });

@@ -21,10 +21,11 @@ module.exports = {
     checkBox: {
         url: '/checkbox',
         selectors: {
-            expandAll: '.rct-option-expand-all',
+            expandButton: '.rct-option-expand-all',
+            collapseButton: '.rct-option-collapse-all',
             result: '#result',
             checkboxLabel: '.rct-title',
-            checkbox: 'input[type="checkbox"]'
+            checkbox: '.rct-item-label:has-text("{name}") >> span'
         }
     },
     menu: {

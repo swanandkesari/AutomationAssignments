@@ -1,11 +1,13 @@
-Feature: Check Box Functionality
+Feature: Checkbox Selection
+  As a user
+  I want to select checkboxes
+  So that I can choose multiple options
 
-  Background:
+  Scenario: Navigate to checkbox page
     Given I navigate to the "checkBox" page
+    Then I should be on "checkbox"
 
-  # Scenario: Expand all and select specific items
-  #   When I expand all checkboxes
-  #   And I select the "Desktop" checkbox
-  #   Then I should see "desktop" in the selected results
-  #   And I should see "notes" in the selected results
-  #   And I should see "commands" in the selected results
+  Scenario: Expand all checkboxes
+    Given I navigate to the "checkBox" page
+    When I expand all checkboxes
+    Then I take a screenshot

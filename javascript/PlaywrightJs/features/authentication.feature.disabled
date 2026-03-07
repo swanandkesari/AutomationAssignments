@@ -1,0 +1,26 @@
+Feature: Authentication
+  As a user
+  I want to authenticate to the system
+  So that I can access protected features
+
+  Scenario: Successful login with valid credentials
+    Given I navigate to the Login page
+    When I enter username "testuser"
+    And I enter password "testpassword123"
+    And I click the login button
+    Then I should be logged in
+
+  Scenario: Failed login with invalid credentials
+    Given I navigate to the Login page
+    When I enter username "invaliduser"
+    And I enter password "wrongpassword"
+    And I click the login button
+    Then I should see an error message
+
+  Scenario: User registration
+    Given I navigate to the Registration page
+    When I enter username "newuser"
+    And I enter email "newuser@example.com"
+    And I enter password "securepassword123"
+    And I click the register button
+    Then I should be logged in
